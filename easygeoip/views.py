@@ -1,6 +1,6 @@
 import json
 import logging
-from django.contrib.gis.geoip import GeoIP, GeoIPException
+from django.contrib.gis.geoip2 import GeoIP2, GeoIP2Exception
 from django.http import HttpResponse
 from django.views.generic import View
 from easygeoip.settings import get_geoip_path
@@ -29,7 +29,7 @@ class LocationFromIpView(View):
             ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', '') or self.request.META.get('REMOTE_ADDR')
         try:
             logger.debug("Using path " + get_geoip_path())
-            g = GeoIP(get_geoip_path())
+            g = GeoIP2(get_geoip_path())
         except GeoIPException as ge:
             return HttpResponse(json.dumps({
                 'ip_address': ip_address,
