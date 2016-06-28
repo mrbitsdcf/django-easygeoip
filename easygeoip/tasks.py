@@ -5,12 +5,9 @@ import gzip
 from celery.task import task
 from . import settings
 
-
 GEOIP_BASE_URL = 'http://geolite.maxmind.com/download/geoip/database/'
-GEOLITE_CITY_FILENAME = 'GeoLiteCity.dat.gz'
-GEOIP_DIR = 'GeoLiteCountry/'
-GEOIP_FILENAME = 'GeoIP.dat.gz'
-
+GEOLITE_CITY_FILENAME = 'GeoLite2-City.mmdb.gz'
+GEOIP_FILENAME = 'GeoLite2-Country.mmdb.gz'
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +63,7 @@ def update_geoip_database():
         },
         {
             'outfile': db_path + GEOIP_FILENAME,
-            'url': GEOIP_BASE_URL + GEOIP_DIR + GEOIP_FILENAME
+            'url': GEOIP_BASE_URL + GEOIP_FILENAME
         }
 
     ]
@@ -75,4 +72,3 @@ def update_geoip_database():
         if download_file(dbfile['url'], dbfile['outfile']):
             extract_gzip(dbfile['outfile'])
             os.remove(dbfile['outfile'])
-
